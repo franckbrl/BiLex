@@ -16,7 +16,8 @@ if __name__ == '__main__':
 		open(outputFile, 'w', encoding='utf-8') as fout:
 		for line in fin:
 			srcWord = line.strip()
-			KList = knn.knnWithNormalizedVectors(srcTable, tgtTable, srcWord, K)
+			#KList = knn.knnWithNormalizedVectors(srcTable, tgtTable, srcWord, K)
+			KList = knn.knnWithNormalizedVectorsParall(srcTable, tgtTable, srcWord, K)
 			if KList is None:
 				print('Unknown word:', srcWord)
 			else:

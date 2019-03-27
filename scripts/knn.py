@@ -42,6 +42,22 @@ def knnWithNormalizedVectors(srcTable, tgtTable, word, K):
 		return sortedScores[0:K]
 	return None
 
+
+def knnWithNormalizedVectorsParall(srcTable, tgtTable, word, K):
+	'''
+	This function assumes the vectors in the tables are normalized numpy arrays, so cosine similarity becomes dot product.
+	'''
+	if word in srcTable:
+		srcVec = srcTable[word]
+		tgtTableOrdered = [(k, v) for k, v in tgtTable.items()]
+		tgtVecs = np.concatenate([kv[1][:,None] for kv in tgtTableOrdered], 1)
+		scores = np.dot(srcVec, tgtVecs)
+		tgtVocab = [kv[0] for kv in tgtTableOrdered]
+		scoreTable = [(w, s) for w, s in zip(tgtVocab, scores)]
+		sortedScores = sorted(scoreTable, key=lambda kv: kv[1], reverse=True)
+		return sortedScores[0:K]
+	return None
+
 if __name__ == '__main__':
 	srcTable = loadBilbowaFormatVectors.load(sys.argv[1])
 	tgtTable = loadBilbowaFormatVectors.load(sys.argv[2])
